@@ -5,7 +5,7 @@
   </div>
   <div class="si-home-hero-grid">
     <div>
-      <p class="si-kicker">SI100B Special Tutorial</p>
+      <p class="si-kicker">SI100B Special Tutorial by Chang Liu</p>
       <h1>Spring 2026</h1>
       <p class="si-lead">
         会在这里补充一些SI100B的相关教程或者作业里面可能会用到的知识点，欢迎同学们来阅读！如果有任何关于课程或者作业的疑问，也欢迎通过邮件联系我！

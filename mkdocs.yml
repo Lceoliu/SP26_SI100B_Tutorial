@@ -1,5 +1,5 @@
 site_name: Chang's Notes
-site_url: https://yourname.github.io/
+site_url: https://lceoliu.github.io/SP26_SI100B_Tutorial/
 theme:
   name: material
   language: zh
@@ -41,18 +41,19 @@ extra_javascript:
 
 extra:
   giscus:
-    repo: ""
-    repo_id: ""
-    category: "Announcements"
-    category_id: ""
+    repo: "Lceoliu/SP26_SI100B_Tutorial"
+    repo_id: "R_kgDORtj6cw"
+    category: "Q&A"
+    category_id: "DIC_kwDORtj6c84C5A60"
     mapping: "pathname"
     strict: "0"
     reactions_enabled: "1"
     emit_metadata: "0"
-    input_position: "top"
+    input_position: "bottom"
     lang: "zh-CN"
     theme_light: "light"
     theme_dark: "transparent_dark"
+    loading: "lazy"
 
 nav:
   - 首页: index.md
