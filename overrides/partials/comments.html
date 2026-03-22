@@ -1,0 +1,58 @@
+{% if page.meta.comments %}
+  {% set giscus = config.extra.giscus %}
+  {% if giscus.repo and giscus.repo_id and giscus.category and giscus.category_id %}
+    <h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
+    <script>
+      var giscus = document.querySelector("script[src*=giscus]")
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+          ? "{{ giscus.theme_dark }}"
+          : "{{ giscus.theme_light }}"
+
+        if (giscus) {
+          giscus.setAttribute("data-theme", theme)
+        }
+      }
+    </script>
+    <script
+      src="https://giscus.app/client.js"
+      data-repo="{{ giscus.repo }}"
+      data-repo-id="{{ giscus.repo_id }}"
+      data-category="{{ giscus.category }}"
+      data-category-id="{{ giscus.category_id }}"
+      data-mapping="{{ giscus.mapping }}"
+      data-strict="{{ giscus.strict }}"
+      data-reactions-enabled="{{ giscus.reactions_enabled }}"
+      data-emit-metadata="{{ giscus.emit_metadata }}"
+      data-input-position="{{ giscus.input_position }}"
+      data-theme=""
+      data-lang="{{ giscus.lang }}"
+      crossorigin="anonymous"
+      async
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var ref = document.querySelector("[data-md-component=palette]")
+        if (!ref) return
+
+        ref.addEventListener("change", function() {
+          var palette = __md_get("__palette")
+          if (palette && typeof palette.color === "object") {
+            var theme = palette.color.scheme === "slate"
+              ? "{{ giscus.theme_dark }}"
+              : "{{ giscus.theme_light }}"
+
+            var frame = document.querySelector(".giscus-frame")
+            if (frame && frame.contentWindow) {
+              frame.contentWindow.postMessage(
+                { giscus: { setConfig: { theme: theme } } },
+                "https://giscus.app"
+              )
+            }
+          }
+        })
+      })
+    </script>
+  {% endif %}
+{% endif %}

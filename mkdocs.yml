@@ -1,0 +1,60 @@
+site_name: Chang's Notes
+site_url: https://yourname.github.io/
+theme:
+  name: material
+  language: zh
+  custom_dir: overrides
+  palette:
+    - scheme: default
+      primary: white
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: 深色模式
+    - scheme: slate
+      primary: black
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: 浅色模式
+  font:
+    text: Noto Sans
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra:
+  giscus:
+    repo: ""
+    repo_id: ""
+    category: "Announcements"
+    category_id: ""
+    mapping: "pathname"
+    strict: "0"
+    reactions_enabled: "1"
+    emit_metadata: "0"
+    input_position: "top"
+    lang: "zh-CN"
+    theme_light: "light"
+    theme_dark: "transparent_dark"
+
+nav:
+  - 首页: index.md
+  - 教程:
+      - 复杂度与二分搜索: hw1/bin_complexity.md

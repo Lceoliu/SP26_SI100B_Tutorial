@@ -1,0 +1,27 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# MkDocs build output
+site/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Conda / local env metadata
+.conda/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
