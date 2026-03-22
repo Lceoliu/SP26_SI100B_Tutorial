@@ -26,9 +26,9 @@
 </section>
 
 <div class="si-link-strip">
-  <a href="./hw1/bin_complexity/">
-    <span>复杂度与二分搜索</span>
-    <strong>01</strong>
+  <a href="https://piazza.com/shanghaitech.edu.cn/spring2026/si100b/resources">
+    <span>课程piazza</span>
+    <strong>→</strong>
   </a>
   <a href="https://github.com/lceoliu">
     <span>GitHub</span>
