@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chang's Notes — SI100B Tutorial</title>
+<link rel="icon" href="assets/images/favicon.png" />
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-primary-fixed": "#00006e",
+        "tertiary": "#64602f",
+        "surface-container-high": "#f5e6d2",
+        "inverse-surface": "#372f22",
+        "inverse-primary": "#bec2ff",
+        "secondary-fixed-dim": "#ffb59c",
+        "secondary-fixed": "#ffdbd0",
+        "on-error": "#ffffff",
+        "on-secondary": "#ffffff",
+        "on-primary-container": "#0000ef",
+        "on-surface": "#221b0f",
+        "surface": "#fff8f3",
+        "on-secondary-fixed": "#390c00",
+        "error": "#ba1a1a",
+        "primary": "#343dff",
+        "primary-container": "#e0e0ff",
+        "error-container": "#ffdad6",
+        "on-secondary-container": "#723520",
+        "primary-fixed": "#e0e0ff",
+        "on-surface-variant": "#474747",
+        "secondary": "#8f4c35",
+        "on-tertiary-container": "#4b481a",
+        "primary-fixed-dim": "#bec2ff",
+        "surface-container-low": "#fff2e1",
+        "surface-bright": "#fff8f3",
+        "on-primary": "#ffffff",
+        "on-tertiary": "#ffffff",
+        "tertiary-fixed": "#ebe5a7",
+        "surface-container-lowest": "#ffffff",
+        "on-background": "#221b0f",
+        "surface-variant": "#efe0cd",
+        "tertiary-fixed-dim": "#cec98d",
+        "outline-variant": "#c6c6c6",
+        "surface-container": "#fbecd8",
+        "surface-dim": "#e6d8c5",
+        "inverse-on-surface": "#feefdb",
+        "secondary-container": "#ffdbd0",
+        "outline": "#777777",
+        "tertiary-container": "#ebe5a7",
+        "on-primary-fixed-variant": "#0000ef",
+        "on-tertiary-fixed-variant": "#4b481a",
+        "on-tertiary-fixed": "#1e1c00",
+        "on-secondary-fixed-variant": "#723520",
+        "on-error-container": "#93000a",
+        "surface-tint": "#343dff",
+        "surface-container-highest": "#efe0cd",
+        "background": "#fff8f3"
+      },
+      fontFamily: {
+        "headline": ["Newsreader", "Songti SC", "serif"],
+        "body": ["Work Sans", "Noto Sans SC", "sans-serif"],
+        "label": ["Work Sans", "sans-serif"]
+      },
+      borderRadius: {
+        "DEFAULT": "0px",
+        "lg": "0px",
+        "xl": "0px",
+        "full": "9999px"
+      },
+    },
+  },
+}
+</script>
+<style>
+.mac-grabber {
+  background-image: repeating-linear-gradient(0deg, #777777, #777777 1px, transparent 1px, transparent 3px);
+  background-size: 100% 3px;
+}
+.signature-stripe {
+  height: 2px;
+  background: linear-gradient(to right, #ef4444 25%, #fb923c 25%, #fb923c 50%, #22c55e 50%, #22c55e 75%, #3b82f6 75%);
+}
+body {
+  font-family: 'Work Sans', 'Noto Sans SC', sans-serif;
+  background-color: #fff8f3;
+}
+html.dark body { background-color: #11161d; }
+html.dark .mac-grabber {
+  background-image: repeating-linear-gradient(0deg, #57534e, #57534e 1px, transparent 1px, transparent 3px);
+}
+
+body, header, aside, footer, section, div, a, span, p, h1, h2, h3, h4, img, input {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #efe0cd; }
+::-webkit-scrollbar-thumb { background: #777; }
+html.dark ::-webkit-scrollbar-track { background: #1a2230; }
+html.dark ::-webkit-scrollbar-thumb { background: #44403c; }
+
+/* Search modal */
+#search-modal {
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s;
+}
+#search-modal.active {
+  opacity: 1; pointer-events: auto;
+}
+#search-results::-webkit-scrollbar { width: 6px; }
+#search-results::-webkit-scrollbar-track { background: transparent; }
+#search-results::-webkit-scrollbar-thumb { background: #aaa; }
+
+/* Quick-links expand */
+.ql-sub { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+.ql-sub.open { max-height: 300px; }
+</style>
+</head>
+
+<body class="text-on-surface selection:bg-primary-container selection:text-on-primary-container dark:text-[#edf1f5] dark:selection:bg-[#2a3040]">
+
+<!-- ══════════════════════════════════════════
+     TOP NAV BAR
+══════════════════════════════════════════ -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-4 h-10 bg-[#f5f5f5] dark:bg-[#1c1917] border-b-2 border-stone-800 dark:border-stone-600 font-body">
+  <div class="flex items-center gap-6">
+    <span class="text-xl font-bold font-headline text-stone-900 dark:text-stone-100">SI100B</span>
+    <nav class="hidden md:flex gap-1 items-center">
+      <a class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white transition-colors duration-75 px-3 py-1 text-sm uppercase tracking-wider" href="hw1/bin_complexity/">Tutorial</a>
+      <a class="bg-primary text-white dark:bg-blue-600 px-3 py-1 text-sm uppercase tracking-wider" href="#">View</a>
+      <a class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white transition-colors duration-75 px-3 py-1 text-sm uppercase tracking-wider" href="https://piazza.com/shanghaitech.edu.cn/spring2026/si100b/resources" target="_blank">Piazza</a>
+      <a class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white transition-colors duration-75 px-3 py-1 text-sm uppercase tracking-wider" href="https://github.com/lceoliu" target="_blank">GitHub</a>
+    </nav>
+    <!-- Mobile hamburger -->
+    <button class="md:hidden text-stone-800 dark:text-stone-100" onclick="document.getElementById('mobile-nav').classList.toggle('hidden')">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+  <div class="flex items-center gap-4">
+    <!-- Search trigger -->
+    <div class="hidden sm:flex relative items-center bg-surface-container-lowest dark:bg-[#292524] border border-outline dark:border-stone-600 px-2 h-7 cursor-pointer" onclick="openSearch()">
+      <span class="material-symbols-outlined text-sm opacity-60">search</span>
+      <span class="bg-transparent text-[10px] tracking-widest w-32 uppercase dark:text-stone-300 opacity-60 pl-1 select-none">SEARCH DOCS...</span>
+      <span class="text-[9px] opacity-40 ml-1 font-mono hidden lg:inline">/</span>
+    </div>
+    <!-- Theme toggle -->
+    <span id="theme-icon" class="material-symbols-outlined text-stone-800 dark:text-stone-100 cursor-pointer hover:text-primary" onclick="toggleTheme()" title="Toggle theme">light_mode</span>
+    <span class="material-symbols-outlined text-stone-800 dark:text-stone-100 cursor-pointer">account_circle</span>
+  </div>
+  <div class="absolute bottom-[-2px] left-0 w-full signature-stripe"></div>
+</header>
+
+<!-- Mobile nav dropdown -->
+<div id="mobile-nav" class="hidden fixed top-10 left-0 w-full z-40 bg-[#f5f5f5] dark:bg-[#1c1917] border-b border-stone-800 dark:border-stone-600 md:hidden">
+  <nav class="flex flex-col">
+    <a class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white px-4 py-2 text-sm uppercase tracking-wider" href="hw1/bin_complexity/">Tutorial</a>
+    <a class="bg-primary text-white px-4 py-2 text-sm uppercase tracking-wider" href="#">View</a>
+    <a class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white px-4 py-2 text-sm uppercase tracking-wider" href="https://piazza.com/shanghaitech.edu.cn/spring2026/si100b/resources" target="_blank">Piazza</a>
+    <a class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white px-4 py-2 text-sm uppercase tracking-wider" href="https://github.com/lceoliu" target="_blank">GitHub</a>
+    <div class="text-stone-800 dark:text-stone-300 hover:bg-primary hover:text-white px-4 py-2 text-sm uppercase tracking-wider cursor-pointer" onclick="openSearch(); document.getElementById('mobile-nav').classList.add('hidden');">
+      <span class="material-symbols-outlined text-sm align-middle mr-1">search</span> Search
+    </div>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SEARCH MODAL
+══════════════════════════════════════════ -->
+<div id="search-modal" class="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh]" onclick="if(event.target===this)closeSearch()">
+  <div class="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
+  <div class="relative w-full max-w-xl mx-4 bg-surface-container-lowest dark:bg-[#1a2230] border border-outline dark:border-[#44403c] shadow-[4px_4px_0px_0px_rgba(71,71,71,0.3)]">
+    <!-- Search title bar -->
+    <div class="h-7 border-b border-outline dark:border-[#44403c] bg-[#dcdcdc] dark:bg-[#2c2c2c] flex items-center px-2 gap-2">
+      <span class="material-symbols-outlined text-xs text-stone-500">search</span>
+      <span class="text-[9px] font-bold uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400">Search Documents</span>
+      <div class="flex-grow"></div>
+      <div class="w-3 h-3 border border-outline cursor-pointer hover:bg-stone-400" onclick="closeSearch()"></div>
+    </div>
+    <!-- Search input -->
+    <div class="flex items-center border-b border-outline/50 dark:border-[#44403c]">
+      <span class="material-symbols-outlined text-lg text-outline pl-3">search</span>
+      <input id="search-input" type="text" class="w-full bg-transparent border-none text-sm font-body px-3 py-3 focus:ring-0 focus:outline-none dark:text-[#edf1f5] placeholder:text-outline placeholder:uppercase placeholder:text-[10px] placeholder:tracking-widest" placeholder="Type to search..." autocomplete="off" oninput="doSearch(this.value)" />
+      <kbd class="mr-3 text-[9px] font-mono px-1.5 py-0.5 border border-outline/50 text-outline bg-[#f5f5f5] dark:bg-[#2c2c2c] select-none">ESC</kbd>
+    </div>
+    <!-- Results -->
+    <div id="search-results" class="max-h-[50vh] overflow-y-auto">
+      <div id="search-empty" class="p-6 text-center text-xs text-on-surface-variant dark:text-stone-500 uppercase tracking-widest">
+        Type a keyword to search all tutorials
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RIGHT UTILITY PANEL
+══════════════════════════════════════════ -->
+<aside class="hidden lg:flex fixed right-0 top-10 h-[calc(100vh-64px)] z-40 flex-col bg-surface-dim dark:bg-[#1e2430] border-l border-stone-800/30 dark:border-stone-600 w-64 font-body">
+  <div class="p-4 border-b border-stone-800/20 dark:border-white/10">
+    <h2 class="font-headline text-lg border-b border-stone-800 dark:border-stone-100 pb-2 text-stone-900 dark:text-stone-100">Utility Panel</h2>
+    <p class="text-[10px] font-bold tracking-tight uppercase mt-1 opacity-60 dark:text-stone-400">V.2026.SP.1</p>
+  </div>
+  <nav class="flex-grow overflow-y-auto">
+    <!-- Announcements -->
+    <a href="https://piazza.com/shanghaitech.edu.cn/spring2026/si100b/resources" target="_blank" class="text-stone-700 dark:text-stone-400 flex items-center p-3 w-full border-b border-stone-800/20 dark:border-white/[0.08] hover:bg-stone-300 dark:hover:bg-white/[0.06] cursor-pointer no-underline">
+      <span class="material-symbols-outlined mr-3">campaign</span>
+      <span class="text-xs font-bold tracking-tight uppercase">Announcements</span>
+      <span class="material-symbols-outlined ml-auto text-sm opacity-40">open_in_new</span>
+    </a>
+    <!-- Quick Links (expandable) -->
+    <div>
+      <div class="text-stone-700 dark:text-stone-400 flex items-center p-3 w-full border-b border-stone-800/20 dark:border-white/[0.08] hover:bg-stone-300 dark:hover:bg-white/[0.06] cursor-pointer" onclick="toggleQL()">
+        <span class="material-symbols-outlined mr-3">link</span>
+        <span class="text-xs font-bold tracking-tight uppercase">Quick Links</span>
+        <span id="ql-arrow" class="material-symbols-outlined ml-auto text-sm opacity-40 transition-transform">expand_more</span>
+      </div>
+      <div id="ql-list" class="ql-sub bg-stone-800/5 dark:bg-white/[0.03]">
+        <a href="https://piazza.com/shanghaitech.edu.cn/spring2026/si100b" target="_blank" class="flex items-center gap-2 px-4 py-2 pl-12 text-[11px] text-stone-600 dark:text-stone-400 hover:text-primary hover:bg-stone-300/50 dark:hover:bg-white/[0.04] no-underline border-b border-stone-800/10 dark:border-white/[0.04]">
+          <span class="material-symbols-outlined text-sm">forum</span> Piazza Course Page
+        </a>
+        <a href="https://github.com/lceoliu/SP26_SI100B_Tutorial" target="_blank" class="flex items-center gap-2 px-4 py-2 pl-12 text-[11px] text-stone-600 dark:text-stone-400 hover:text-primary hover:bg-stone-300/50 dark:hover:bg-white/[0.04] no-underline border-b border-stone-800/10 dark:border-white/[0.04]">
+          <span class="material-symbols-outlined text-sm">code</span> GitHub Repository
+        </a>
+        <a href="mailto:liuchang2023@shanghaitech.edu.cn" class="flex items-center gap-2 px-4 py-2 pl-12 text-[11px] text-stone-600 dark:text-stone-400 hover:text-primary hover:bg-stone-300/50 dark:hover:bg-white/[0.04] no-underline border-b border-stone-800/10 dark:border-white/[0.04]">
+          <span class="material-symbols-outlined text-sm">mail</span> Contact TA
+        </a>
+      </div>
+    </div>
+    <!-- Resources -->
+    <a href="hw1/bin_complexity/" class="text-stone-700 dark:text-stone-400 flex items-center p-3 w-full border-b border-stone-800/20 dark:border-white/[0.08] hover:bg-stone-300 dark:hover:bg-white/[0.06] cursor-pointer no-underline">
+      <span class="material-symbols-outlined mr-3">menu_book</span>
+      <span class="text-xs font-bold tracking-tight uppercase">Tutorials</span>
+      <span id="sidebar-tutorial-count" class="ml-auto text-[9px] font-black text-primary/60 bg-primary/10 px-1.5 py-0.5">—</span>
+    </a>
+    <!-- Archives -->
+    <a href="https://github.com/lceoliu/SP26_SI100B_Tutorial/commits/main" target="_blank" class="text-stone-700 dark:text-stone-400 flex items-center p-3 w-full border-b border-stone-800/20 dark:border-white/[0.08] hover:bg-stone-300 dark:hover:bg-white/[0.06] cursor-pointer no-underline">
+      <span class="material-symbols-outlined mr-3">inventory_2</span>
+      <span class="text-xs font-bold tracking-tight uppercase">Archives</span>
+      <span class="material-symbols-outlined ml-auto text-sm opacity-40">open_in_new</span>
+    </a>
+  </nav>
+  <footer class="mt-auto border-t border-stone-800/20 dark:border-white/10">
+    <!-- System Status -->
+    <div class="p-3 w-full border-b border-stone-800/10 dark:border-white/[0.05]">
+      <div class="flex items-center text-stone-700 dark:text-stone-400">
+        <span class="material-symbols-outlined mr-3">dns</span>
+        <span class="text-xs font-bold tracking-tight uppercase">System Status</span>
+      </div>
+      <div class="pl-9 mt-1.5 space-y-1">
+        <div class="flex items-center gap-1.5 text-[10px] text-stone-500 dark:text-stone-500">
+          <span class="w-1.5 h-1.5 bg-green-500 inline-block flex-shrink-0"></span>
+          <span>Site Online</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-[10px] text-stone-500 dark:text-stone-500">
+          <span class="w-1.5 h-1.5 bg-green-500 inline-block flex-shrink-0"></span>
+          <span>Spring 2026 Semester</span>
+        </div>
+        <div class="text-[10px] text-stone-400 dark:text-stone-600 mt-0.5">
+          Last build: <span id="build-date"></span>
+        </div>
+      </div>
+    </div>
+    <!-- Help -->
+    <a href="mailto:liuchang2023@shanghaitech.edu.cn?subject=SI100B%20Tutorial%20Help" class="text-stone-700 dark:text-stone-400 flex items-center p-3 w-full hover:bg-stone-300 dark:hover:bg-white/[0.06] cursor-pointer no-underline">
+      <span class="material-symbols-outlined mr-3">help_outline</span>
+      <span class="text-xs font-bold tracking-tight uppercase">Help / Feedback</span>
+    </a>
+  </footer>
+</aside>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT AREA
+══════════════════════════════════════════ -->
+<main class="pt-20 pb-12 lg:pr-64 px-4 sm:px-8 md:px-16 min-h-screen">
+  <div class="max-w-5xl mx-auto space-y-12">
+
+    <!-- ── Hero: Macintosh Window ── -->
+    <section class="border border-outline dark:border-[#44403c] bg-surface-container-lowest dark:bg-[#1a2230] shadow-[4px_4px_0px_0px_rgba(71,71,71,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.4)]">
+      <!-- Title Bar -->
+      <div class="h-8 border-b border-outline dark:border-[#44403c] bg-[#dcdcdc] dark:bg-[#2c2c2c] flex items-center px-2 gap-2">
+        <div class="w-4 h-4 border border-outline bg-surface-container-lowest"></div>
+        <div class="flex-grow h-4 mac-grabber mx-2 opacity-40"></div>
+        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-400">si100b_tutorial.app</span>
+        <div class="flex-grow h-4 mac-grabber mx-2 opacity-40"></div>
+        <div class="flex gap-1">
+          <div class="w-3 h-3 border border-outline"></div>
+          <div class="w-3 h-3 border border-outline"></div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="p-6 sm:p-8 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12">
+        <!-- Left: Text -->
+        <div class="flex-1 space-y-6">
+          <header>
+            <p class="font-body text-primary font-bold uppercase tracking-[0.2rem] text-[10px] mb-2">SI100B Special Tutorial / Spring 2026</p>
+            <h1 class="font-headline text-4xl sm:text-5xl md:text-6xl text-on-surface dark:text-[#edf1f5] leading-tight font-bold -tracking-[0.02em]">Spring 2026</h1>
+          </header>
+          <div class="prose prose-stone">
+            <p class="font-body text-on-surface-variant dark:text-stone-400 text-base sm:text-lg leading-relaxed max-w-xl">
+              会在这里补充一些 SI100B 的相关教程或者作业里面可能会用到的知识点，欢迎同学们来阅读！如果有任何关于课程或者作业的疑问，也欢迎联系我！
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-4 pt-4">
+            <a href="hw1/bin_complexity/" class="px-8 py-3 bg-primary text-on-primary border border-stone-900 text-sm font-bold tracking-widest uppercase hover:bg-on-primary-container transition-all inline-block no-underline">
+              START READING
+            </a>
+            <a href="mailto:liuchang2023@shanghaitech.edu.cn" class="px-8 py-3 bg-surface-container-high dark:bg-[#2a3040] text-on-surface dark:text-[#edf1f5] border border-outline dark:border-[#44403c] text-sm font-bold tracking-widest uppercase hover:bg-surface-variant transition-all inline-block no-underline">
+              CONTACT TA
+            </a>
+          </div>
+        </div>
+        <!-- Right: Hero Visual -->
+        <div class="flex-1">
+          <div class="relative border border-outline dark:border-[#44403c] p-2 bg-surface-container-high dark:bg-[#2a3040]">
+            <div class="aspect-square bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline/50">
+              <img alt="Circuit Detail" class="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal opacity-80 dark:opacity-90" src="assets/images/chip.png" />
+              <div class="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-transparent pointer-events-none"></div>
+            </div>
+            <div class="absolute -bottom-4 -left-4 w-12 h-12 signature-stripe rotate-90 border border-outline"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Bento Grid: Curriculum + Marginalia ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+      <!-- Curriculum Index (Main) — dynamically populated -->
+      <div class="lg:col-span-8 space-y-6">
+        <h3 class="font-headline text-2xl font-bold border-b border-outline dark:border-[#44403c] pb-2 flex items-center justify-between dark:text-[#edf1f5]">
+          Curriculum Index
+          <span id="curriculum-badge" class="text-[10px] font-body uppercase tracking-widest opacity-50">Sect. 100B</span>
+        </h3>
+        <div id="module-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- JS will populate this -->
+        </div>
+      </div>
+
+      <!-- Marginalia (Side) -->
+      <div class="lg:col-span-4 space-y-8">
+        <!-- Staff Panel -->
+        <div class="border border-outline dark:border-[#44403c] bg-surface-container-high dark:bg-[#1e2a3a] p-6">
+          <h4 class="font-body text-[10px] font-black uppercase tracking-[0.2em] text-secondary mb-4">Technical Staff</h4>
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3">
+              <div class="w-10 h-10 border border-outline bg-surface-container-lowest overflow-hidden flex-shrink-0">
+                <img alt="Chang Liu" class="w-full h-full object-cover object-[center_20%] grayscale" src="assets/images/avater1024_macintosh.png" />
+              </div>
+              <div>
+                <p class="font-bold text-xs uppercase dark:text-[#edf1f5]">Chang Liu</p>
+                <p class="text-[10px] opacity-60 uppercase">Teaching Assistant</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Quote Panel -->
+        <div class="p-6 border-l-4 border-primary bg-primary-container/10">
+          <p class="font-headline italic text-sm text-on-surface-variant dark:text-stone-400 leading-relaxed">
+            "The art of programming is the art of organizing complexity, of mastering multitude and avoiding its bastard chaos as effectively as possible."
+          </p>
+          <p class="mt-2 font-body text-[10px] font-bold uppercase tracking-widest text-primary">— Edsger W. Dijkstra</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════════
+     BOTTOM STATUS BAR
+══════════════════════════════════════════ -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-between items-center px-6 h-6 bg-[#dcdcdc] dark:bg-[#0a0908] border-t border-stone-800 dark:border-stone-600 font-body text-[10px] font-medium tracking-[0.1rem] uppercase">
+  <div class="flex items-center gap-4">
+    <span class="text-stone-600 dark:text-stone-500">© 2026 Chang's Notes — SI100B</span>
+    <div class="signature-stripe w-16 h-1 hidden sm:block"></div>
+  </div>
+  <div class="flex gap-6">
+    <a class="text-stone-500 hover:text-black dark:hover:text-white transition-colors no-underline" href="https://piazza.com/shanghaitech.edu.cn/spring2026/si100b/resources" target="_blank">Terminal</a>
+    <a class="text-stone-900 dark:text-stone-100 underline" href="hw1/bin_complexity/">Preferences</a>
+    <a class="text-stone-500 hover:text-black dark:hover:text-white transition-colors no-underline" href="mailto:liuchang2023@shanghaitech.edu.cn">Exit</a>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════════════════════════
+   TUTORIAL DESCRIPTIONS — 手动维护每篇教程的摘要
+   key = search_index.json 中的 location（不含 #）
+   添加新教程时只需在此处加一行即可
+   ══════════════════════════════════════════════════════════ */
+var TUTORIAL_DESCRIPTIONS = {
+  "hw1/bin_complexity/": "什么是 O(n) 和 O(log n)？理解算法复杂度与二分搜索的核心思想。"
+  // 新增教程时在这里添加，例如：
+  // "hw2/sorting/": "常见排序算法的实现与比较分析。",
+};
+
+/* 四格卡片的背景色（light / dark） */
+var CARD_BG = [
+  ["bg-surface-container-low",      "dark:bg-[#1a2230]"],
+  ["bg-[#fff2e1]",                   "dark:bg-[#1e2430]"],
+  ["bg-surface-container",           "dark:bg-[#1a2a3a]"],
+  ["bg-surface-container-highest",   "dark:bg-[#22303e]"]
+];
+var PLACEHOLDER_BG = [
+  ["bg-surface-dim/60",  "dark:bg-[#161c24]"],
+  ["bg-surface-dim/60",  "dark:bg-[#161c24]"],
+  ["bg-surface-dim/60",  "dark:bg-[#161c24]"],
+  ["bg-surface-dim/60",  "dark:bg-[#161c24]"]
+];
+
+/* ── Theme toggle ── */
+function toggleTheme() {
+  var html = document.documentElement;
+  var isDark = html.classList.toggle('dark');
+  localStorage.setItem('si-theme', isDark ? 'dark' : 'light');
+  updateThemeIcon();
+}
+function updateThemeIcon() {
+  var icon = document.getElementById('theme-icon');
+  if (!icon) return;
+  icon.textContent = document.documentElement.classList.contains('dark') ? 'dark_mode' : 'light_mode';
+}
+(function() {
+  if (localStorage.getItem('si-theme') === 'dark') document.documentElement.classList.add('dark');
+  updateThemeIcon();
+})();
+
+/* ── Quick Links toggle ── */
+function toggleQL() {
+  var list = document.getElementById('ql-list');
+  var arrow = document.getElementById('ql-arrow');
+  list.classList.toggle('open');
+  arrow.style.transform = list.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+/* ── Build date ── */
+document.getElementById('build-date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+/* ── Curriculum Index: fetch tutorials from search index ── */
+function renderCurriculum() {
+  fetch('search/search_index.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var docs = data.docs || [];
+      /* 筛选页面级条目（无 # 且非首页） */
+      var tutorials = [];
+      for (var i = 0; i < docs.length; i++) {
+        var loc = docs[i].location;
+        if (!loc || loc.indexOf('#') !== -1) continue;  // 跳过子标题和空首页
+        tutorials.push({ title: docs[i].title, location: loc });
+      }
+
+      var total = tutorials.length;
+      var grid = document.getElementById('module-grid');
+      var SLOTS = 4;
+      var shown = Math.min(total, SLOTS);
+      var html = '';
+
+      /* 渲染已有教程 */
+      for (var j = 0; j < shown; j++) {
+        var t = tutorials[j];
+        var num = String(j + 1).padStart(2, '0');
+        var bg = CARD_BG[j][0] + ' ' + CARD_BG[j][1];
+        var desc = TUTORIAL_DESCRIPTIONS[t.location] || '';
+        html += '<a href="' + escHtml(t.location) + '" class="group border border-outline dark:border-[#44403c] hover:border-primary transition-colors cursor-pointer ' + bg + ' p-5 no-underline block">';
+        html += '<span class="font-body text-xs font-black text-primary/40 block mb-2">' + num + '</span>';
+        html += '<h4 class="font-headline text-xl font-bold text-on-surface dark:text-[#edf1f5] group-hover:text-primary transition-colors mb-2">' + escHtml(t.title) + '</h4>';
+        if (desc) {
+          html += '<p class="text-xs text-on-surface-variant dark:text-stone-400 leading-relaxed">' + escHtml(desc) + '</p>';
+        }
+        html += '</a>';
+      }
+
+      /* 不足四格则填充占位 */
+      for (var k = shown; k < SLOTS; k++) {
+        var pNum = String(k + 1).padStart(2, '0');
+        var pBg = PLACEHOLDER_BG[k][0] + ' ' + PLACEHOLDER_BG[k][1];
+        html += '<div class="border border-outline/40 dark:border-[#44403c]/40 ' + pBg + ' p-5 opacity-50 select-none">';
+        html += '<span class="font-body text-xs font-black text-primary/20 block mb-2">' + pNum + '</span>';
+        html += '<h4 class="font-headline text-lg font-bold text-on-surface/30 dark:text-[#edf1f5]/20 mb-2">Coming Soon</h4>';
+        html += '<p class="text-xs text-on-surface-variant/40 dark:text-stone-500/40 leading-relaxed">尚未更新</p>';
+        html += '</div>';
+      }
+
+      grid.innerHTML = html;
+
+      /* 更新侧栏教程计数 */
+      var badge = document.getElementById('sidebar-tutorial-count');
+      if (badge) badge.textContent = total;
+
+      /* 更新 Curriculum 标题徽章 */
+      var cb = document.getElementById('curriculum-badge');
+      if (cb) cb.textContent = total + ' / ' + SLOTS + ' Tutorials';
+    })
+    .catch(function() {
+      /* 如果 fetch 失败，显示静态占位 */
+      var grid = document.getElementById('module-grid');
+      var html = '';
+      for (var k = 0; k < 4; k++) {
+        var pNum = String(k + 1).padStart(2, '0');
+        html += '<div class="border border-outline/40 dark:border-[#44403c]/40 bg-surface-dim/60 dark:bg-[#161c24] p-5 opacity-50 select-none">';
+        html += '<span class="font-body text-xs font-black text-primary/20 block mb-2">' + pNum + '</span>';
+        html += '<h4 class="font-headline text-lg font-bold text-on-surface/30 dark:text-[#edf1f5]/20 mb-2">Coming Soon</h4>';
+        html += '<p class="text-xs text-on-surface-variant/40 dark:text-stone-500/40 leading-relaxed">尚未更新</p>';
+        html += '</div>';
+      }
+      grid.innerHTML = html;
+    });
+}
+
+renderCurriculum();
+
+/* ── Search ── */
+var searchIndex = null;
+
+function openSearch() {
+  var modal = document.getElementById('search-modal');
+  modal.classList.add('active');
+  var input = document.getElementById('search-input');
+  input.value = '';
+  input.focus();
+  document.getElementById('search-results').innerHTML =
+    '<div id="search-empty" class="p-6 text-center text-xs text-on-surface-variant dark:text-stone-500 uppercase tracking-widest">Type a keyword to search all tutorials</div>';
+  if (!searchIndex) loadSearchIndex();
+}
+
+function closeSearch() {
+  document.getElementById('search-modal').classList.remove('active');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    openSearch();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+function loadSearchIndex() {
+  fetch('search/search_index.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { searchIndex = data.docs || []; })
+    .catch(function() { searchIndex = []; });
+}
+
+function doSearch(query) {
+  var container = document.getElementById('search-results');
+  if (!query || query.length < 2) {
+    container.innerHTML = '<div class="p-6 text-center text-xs text-on-surface-variant dark:text-stone-500 uppercase tracking-widest">Type a keyword to search all tutorials</div>';
+    return;
+  }
+  if (!searchIndex) { container.innerHTML = '<div class="p-4 text-xs text-outline">Loading index...</div>'; return; }
+
+  var q = query.toLowerCase();
+  var results = [];
+  for (var i = 0; i < searchIndex.length; i++) {
+    var doc = searchIndex[i];
+    var title = doc.title || '';
+    var text = doc.text || '';
+    var loc = doc.location || '';
+    var titleLower = title.toLowerCase();
+    var textLower = text.toLowerCase();
+    var titleIdx = titleLower.indexOf(q);
+    var textIdx = textLower.indexOf(q);
+    if (titleIdx !== -1 || textIdx !== -1) {
+      var score = titleIdx !== -1 ? 100 : 0;
+      var snippet = '';
+      if (textIdx !== -1) {
+        var start = Math.max(0, textIdx - 40);
+        var end = Math.min(text.length, textIdx + q.length + 80);
+        snippet = (start > 0 ? '...' : '') + text.substring(start, end) + (end < text.length ? '...' : '');
+      }
+      results.push({ title: title, location: loc, snippet: snippet, score: score });
+    }
+  }
+  results.sort(function(a, b) { return b.score - a.score; });
+  results = results.slice(0, 12);
+
+  if (results.length === 0) {
+    container.innerHTML = '<div class="p-6 text-center text-xs text-on-surface-variant dark:text-stone-500 uppercase tracking-widest">No results found</div>';
+    return;
+  }
+
+  var html = '';
+  for (var j = 0; j < results.length; j++) {
+    var r = results[j];
+    var href = r.location;
+    html += '<a href="' + escHtml(href) + '" class="block px-4 py-3 border-b border-outline/20 dark:border-[#44403c]/50 hover:bg-primary/5 dark:hover:bg-white/[0.04] no-underline group">';
+    html += '<div class="text-sm font-bold text-on-surface dark:text-[#edf1f5] group-hover:text-primary transition-colors">' + escHtml(r.title || r.location) + '</div>';
+    if (r.snippet) {
+      html += '<div class="text-[11px] text-on-surface-variant dark:text-stone-500 mt-0.5 leading-relaxed line-clamp-2">' + highlightMatch(escHtml(r.snippet), query) + '</div>';
+    }
+    html += '<div class="text-[9px] text-outline mt-1 uppercase tracking-wider">' + escHtml(r.location) + '</div>';
+    html += '</a>';
+  }
+  container.innerHTML = html;
+}
+
+function escHtml(s) {
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(s));
+  return d.innerHTML;
+}
+
+function highlightMatch(html, query) {
+  if (!query) return html;
+  var esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return html.replace(new RegExp('(' + esc + ')', 'gi'), '<mark class="bg-primary/20 text-on-surface dark:text-[#edf1f5] px-0.5">$1</mark>');
+}
+</script>
+
+</body>
+</html>
