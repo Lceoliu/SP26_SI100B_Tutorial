@@ -28,6 +28,9 @@ theme:
     - search.suggest
     - search.highlight
 
+hooks:
+  - hooks/gen_tutorials.py
+
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true

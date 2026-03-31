@@ -1,5 +1,6 @@
 ---
 comments: true
+description: 什么是 O(n) 和 O(log n)？理解算法复杂度与二分搜索的核心思想。
 ---
 
 # 复杂度与二分搜索
