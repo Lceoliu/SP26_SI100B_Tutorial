@@ -62,3 +62,4 @@ nav:
   - 首页: index.md
   - 教程:
       - 复杂度与二分搜索: hw1/bin_complexity.md
+      - 递归与排序: hw2/sort.md
