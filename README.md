@@ -66,3 +66,20 @@ GitHub Pages should be configured in the repository settings as:
 - Source files are in `docs/`
 - Theme overrides are in `overrides/`
 - Generated static files are output to `site/` and should not be committed
+
+## My Crafting
+
+[Open the crafting table](https://lceoliu.github.io/SP26_SI100B_Tutorial/my-crafting/).
+
+The standalone app lives in `apps/my-crafting/`. It calls the uploaded Python `crafting(recipes, ingredients)` function in a local Pyodide worker. `ValueError` and `LookupError` must match exactly; subclasses are execution errors. The downloadable `test_crafting.py` checks only the three public examples. No reference solution or private judge data is included.
+
+Local development (Node.js 24):
+
+```sh
+cd apps/my-crafting
+npm ci
+npm test
+npm run dev
+```
+
+The existing Pages workflow builds the MkDocs notes and then adds the app at `my-crafting/`; existing tutorial URLs are unchanged.

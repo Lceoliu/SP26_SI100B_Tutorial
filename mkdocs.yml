@@ -60,6 +60,7 @@ extra:
 
 nav:
   - 首页: index.md
+  - My Crafting: https://lceoliu.github.io/SP26_SI100B_Tutorial/my-crafting/
   - 教程:
       - 复杂度与二分搜索: hw1/bin_complexity.md
       - 递归与排序: hw2/sort.md

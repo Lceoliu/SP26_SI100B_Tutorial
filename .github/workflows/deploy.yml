@@ -37,6 +37,25 @@ jobs:
       - name: Build site
         run: mkdocs build --strict
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: apps/my-crafting/package-lock.json
+
+      - name: Build My Crafting
+        working-directory: apps/my-crafting
+        run: |
+          npm ci
+          npm test
+          npm run build
+
+      - name: Add My Crafting to the site
+        run: |
+          mkdir -p site/my-crafting
+          cp -a apps/my-crafting/dist/. site/my-crafting/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
