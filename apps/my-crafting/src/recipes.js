@@ -46,6 +46,13 @@ export function formatCall(grid, lines = recipeLines) {
   return `crafting(\n    recipes=[\n${args.recipes.map(line => `        ${JSON.stringify(line)}`).join(',\n')}\n    ],\n    ingredients=${JSON.stringify(args.ingredients)}\n)`;
 }
 
+// Group a recipe's ingredient list for display: [['paper', 3], ['leather', 1]].
+export function countIngredients(list) {
+  const counts = new Map();
+  for (const name of list) counts.set(name, (counts.get(name) || 0) + 1);
+  return [...counts];
+}
+
 export function moveIngredient(grid, from, to) {
   const next = [...grid];
   [next[from], next[to]] = [next[to], next[from]];
